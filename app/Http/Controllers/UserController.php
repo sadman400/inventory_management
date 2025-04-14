@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Helper\JWTToken;
+use App\Mail\SendOTP;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -35,12 +37,37 @@ class UserController extends Controller
                 'status' => 'success',
                 'message' => 'user login successful',
                 'token' => $token
-            ], 200);
+            ], 200)->cookie('token', $token, 60);
         } else {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'login failed!',
             ], 401);
+        }
+    }
+
+
+
+    public function send_otp (Request $request) {
+        $email = $request->validate([
+            'email' => 'required'
+        ]);
+        $otp = rand(1000, 9999);
+        $user = User::where('email', $email)->first();
+        if ($user) {
+            Mail::to($user->email)->send(new SendOTP($otp, $user->name));
+            User::where('email', $user->email)->update([
+                'otp' => $otp
+            ]);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'OTP sended successful',
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'failed to send OTP',
+            ], 400);
         }
     }
 }
