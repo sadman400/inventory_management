@@ -70,4 +70,30 @@ class UserController extends Controller
             ], 400);
         }
     }
+
+
+    public function verify_otp (Request $request) {
+        $request->validate([
+            'email' => 'email',
+            'otp' => 'required',
+        ]);
+
+        $user = User::where('email', $request->email)->where('otp', $request->otp)->first();
+        if ($user) {
+            $token = JWTToken::create_token_verification($user->email);
+            User::where('email', $user->email)->update([
+                'otp' => '0'
+            ]);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'otp verification successful',
+                'token' => $token,
+            ], 200)->cookie('token', $token, 60);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'otp verification failed',
+            ], 401);
+        }
+    }
 }
