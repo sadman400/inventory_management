@@ -22,6 +22,15 @@ class JWTToken {
         ], self::get_key(), 'HS256');
     }
 
+    public static function create_token_verification ($email) {
+        return JWT::encode([
+            'iss' => 'otp-verification-token',
+            'iat' => time(),
+            'exp' => time() + 3600,
+            'email' => $email,
+        ], self::get_key(), 'HS256');
+    }
+
     public static function verify_token($token) {
         try {
             return JWT::decode($token, new Key(self::get_key(), 'HS256'));
