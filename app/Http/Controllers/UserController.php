@@ -119,6 +119,14 @@ class UserController extends Controller
             ], 401);
         }
     }
+
+
+    public function logout () {
+        return response()->json([
+            'status' => 'failed',
+            'message' => 'logout successful',
+        ], 200)->cookie('token', '', -1);
+    }
 }
 
 
