@@ -137,6 +137,30 @@ class UserController extends Controller
             'profile' => $profile
         ], 200);
     }
+
+
+    public function update_profile (Request $request) {
+        $email = $request->header('email');
+        $user = User::where('email', $email)->first();
+        if ($user) {
+            User::where('email', $user->email)->update([
+                'name' => $request->input('name'),
+                'mobile' => $request->input('mobile'),
+                'email' => $request->input('email'),
+                'password' => $request->input('password'),
+            ]);
+            $updated_profile = User::where('email', $user->email)->get();
+            return response()->json([
+                'status' => 'success',
+                'profile' => $updated_profile,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'unable to update profile'
+            ], 401);
+        } 
+    }
 }
 
 
