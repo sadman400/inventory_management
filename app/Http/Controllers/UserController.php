@@ -96,4 +96,31 @@ class UserController extends Controller
             ], 401);
         }
     }
+
+
+    public function password_reset (Request $request) {
+        $email = $request->header('email');
+        $request->validate([
+            'password' => 'required'
+        ]);
+        $user = User::where('email', $email)->first();
+        if ($user) {
+            User::where('email', $email)->update([
+                'password'=>$request->password
+            ]);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'password reset successful',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'unable to reset the password!',
+            ], 401);
+        }
+    }
 }
+
+
+
+
