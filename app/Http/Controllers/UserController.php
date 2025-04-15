@@ -127,6 +127,16 @@ class UserController extends Controller
             'message' => 'logout successful',
         ], 200)->cookie('token', '', -1);
     }
+
+
+    public function user_profile (Request $request) {
+        $email = $request->header('email');
+        $profile = User::where('email', $email)->get();
+        return response()->json([
+            'status' => 'success',
+            'profile' => $profile
+        ], 200);
+    }
 }
 
 
