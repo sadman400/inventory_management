@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenVerificationMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -23,3 +24,11 @@ Route::get('/category-list', [CategoryController::class, 'category_list']);
 Route::post('/category-by-id', [CategoryController::class, 'category_by_id']);
 Route::post('/update-category', [CategoryController::class, 'update_category']);
 Route::post('/delete-category', [CategoryController::class, 'delete_category']);
+
+
+// product 
+Route::post('/create-product', [ProductController::class, 'create_product']);
+Route::get('/product-list', [ProductController::class, 'product_list']);
+Route::post('/product-by-id', [ProductController::class, 'product_by_id']);
+Route::post('/update-product', [ProductController::class, 'update_product']);
+Route::post('/delete-product', [ProductController::class, 'delete_product']);
