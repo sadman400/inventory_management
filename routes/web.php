@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenVerificationMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -32,3 +33,11 @@ Route::get('/product-list', [ProductController::class, 'product_list']);
 Route::post('/product-by-id', [ProductController::class, 'product_by_id']);
 Route::post('/update-product', [ProductController::class, 'update_product']);
 Route::post('/delete-product', [ProductController::class, 'delete_product']);
+
+
+// supplier 
+Route::post('/create-supplier', [SupplierController::class, 'create_supplier']);
+Route::get('/supplier-list', [SupplierController::class, 'supplier_list']);
+Route::post('/supplier-by-id', [SupplierController::class, 'supplier_by_id']);
+Route::post('/update-supplier', [SupplierController::class, 'update_supplier']);
+Route::post('/delete-supplier', [SupplierController::class, 'delete_supplier']);
